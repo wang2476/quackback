@@ -1,6 +1,7 @@
 import { Button, Heading, Hr, Section, Text } from '@react-email/components'
 import { EmailLayout, TransactionalFooter } from './email-layout'
 import { typography, button, utils } from './shared-styles'
+import { getEmailProductName } from '../branding'
 
 interface MagicLinkEmailProps {
   signInUrl: string
@@ -18,9 +19,10 @@ interface MagicLinkEmailProps {
  * convenient.
  */
 export function MagicLinkEmail({ signInUrl, code, logoUrl }: MagicLinkEmailProps) {
+  const productName = getEmailProductName()
   return (
     <EmailLayout preview="Your sign-in link" logoUrl={logoUrl}>
-      <Heading style={{ ...typography.h1, textAlign: 'center' }}>Sign in to Quackback</Heading>
+      <Heading style={{ ...typography.h1, textAlign: 'center' }}>Sign in to {productName}</Heading>
       <Text style={{ ...typography.text, textAlign: 'center' }}>
         Click the button below to finish signing in.
       </Text>

@@ -1,6 +1,7 @@
 import { Button, Heading, Link, Section, Text } from '@react-email/components'
 import { EmailLayout, TransactionalFooter } from './email-layout'
 import { typography, button, utils } from './shared-styles'
+import { getEmailProductName } from '../branding'
 
 interface PasswordResetEmailProps {
   resetLink: string
@@ -8,8 +9,9 @@ interface PasswordResetEmailProps {
 }
 
 export function PasswordResetEmail({ resetLink, logoUrl }: PasswordResetEmailProps) {
+  const productName = getEmailProductName()
   return (
-    <EmailLayout preview="Reset your Quackback password" logoUrl={logoUrl}>
+    <EmailLayout preview={`Reset your ${productName} password`} logoUrl={logoUrl}>
       {/* Content */}
       <Heading style={{ ...typography.h1, textAlign: 'center' }}>Reset your password</Heading>
       <Text style={{ ...typography.text, textAlign: 'center' }}>

@@ -32,6 +32,7 @@ import { isTeamCallback } from '@/lib/shared/routing'
 import { lookupAuthMethodsFn, type LookupAuthMethodsResult } from '@/lib/server/functions/auth'
 import { OtpCodeStep } from './otp-code-step'
 import { useEmailSignin } from './use-email-signin'
+import { TurnstileWidget } from './turnstile-widget'
 import { TwoFactorEnrollSteps } from './two-factor-enroll-steps'
 import { TwoFactorChallengeStep } from './two-factor-challenge-step'
 import type { AuthFormStep } from './email-signin-types'
@@ -185,6 +186,9 @@ export function PortalAuthFormInline({
   const [invitation, setInvitation] = useState<InvitationInfo | null>(null)
   const [loadingInvitation, setLoadingInvitation] = useState(!!invitationId)
   const [popupBlocked, setPopupBlocked] = useState(false)
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null)
+  const [turnstileRequired, setTurnstileRequired] = useState(false)
+  const [turnstileResetKey, setTurnstileResetKey] = useState(0)
 
   const lookupAuthMethods = useServerFn(lookupAuthMethodsFn)
 
@@ -414,10 +418,15 @@ export function PortalAuthFormInline({
   const requestSigninEmail = async () => {
     setError('')
     setLoadingAction('email')
-    const res = await emailSignin.requestEmail(email)
+    const res = await emailSignin.requestEmail(email, turnstileToken)
     setLoadingAction(null)
-    if (res.ok) setView({ stage: 'methods-step', step: 'code' })
-    else if (res.error) setError(res.error)
+    if (res.ok) {
+      setTurnstileToken(null)
+      setView({ stage: 'methods-step', step: 'code' })
+    } else {
+      setTurnstileResetKey((key) => key + 1)
+      if (res.error) setError(res.error)
+    }
   }
 
   // --- Forgot password handler ---
@@ -485,13 +494,19 @@ export function PortalAuthFormInline({
     emailSignin.verify(email, emailSignin.code)
   }
 
-  const handleResend = () => emailSignin.resend(email)
+  const handleResend = () => {
+    setTurnstileToken(null)
+    setTurnstileResetKey((key) => key + 1)
+    setView({ stage: 'methods-step', step: 'email' })
+  }
 
   /** Stage 2 → Stage 1 escape hatch. */
   const backToEmail = () => {
     setError('')
     setPassword('')
     emailSignin.reset()
+    setTurnstileToken(null)
+    setTurnstileResetKey((key) => key + 1)
     setView({ stage: 'email' })
   }
 
@@ -499,6 +514,8 @@ export function PortalAuthFormInline({
   const backToMethods = () => {
     setError('')
     emailSignin.reset()
+    setTurnstileToken(null)
+    setTurnstileResetKey((key) => key + 1)
     setView({ stage: 'methods-step', step: methodsDefaultStep })
   }
 
@@ -1113,7 +1130,17 @@ export function PortalAuthFormInline({
 
           <input type="hidden" name="email" value={email} autoComplete="email" readOnly />
 
-          <Button type="submit" disabled={loadingAction !== null} className="w-full">
+          <TurnstileWidget
+            resetKey={turnstileResetKey}
+            onTokenChange={setTurnstileToken}
+            onRequirementChange={setTurnstileRequired}
+          />
+
+          <Button
+            type="submit"
+            disabled={loadingAction !== null || (turnstileRequired && !turnstileToken)}
+            className="w-full"
+          >
             {loadingAction === 'email' ? (
               <>
                 <ArrowPathIcon className="mr-2 h-4 w-4 animate-spin" />

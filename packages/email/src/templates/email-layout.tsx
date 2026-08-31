@@ -10,6 +10,7 @@ import {
   Link,
 } from '@react-email/components'
 import { layout, branding, typography, utils, colors, DEFAULT_LOGO_URL } from './shared-styles'
+import { getEmailProductName } from '../branding'
 
 interface EmailLayoutProps {
   preview: string
@@ -28,7 +29,7 @@ interface EmailLayoutProps {
 export function EmailLayout({
   preview,
   logoUrl,
-  logoAlt = 'Quackback',
+  logoAlt = getEmailProductName(),
   children,
   footer,
 }: EmailLayoutProps) {

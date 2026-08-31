@@ -1,6 +1,7 @@
 import { Button, Heading, Link, Section, Text } from '@react-email/components'
 import { EmailLayout, TransactionalFooter } from './email-layout'
 import { typography, button, utils } from './shared-styles'
+import { getEmailProductName } from '../branding'
 
 interface InvitationEmailProps {
   invitedByName: string
@@ -17,9 +18,10 @@ export function InvitationEmail({
   inviteLink,
   logoUrl,
 }: InvitationEmailProps) {
+  const productName = getEmailProductName()
   return (
     <EmailLayout
-      preview={`Join ${organizationName} on Quackback`}
+      preview={`Join ${organizationName} on ${productName}`}
       logoUrl={logoUrl}
       logoAlt={organizationName}
     >
@@ -29,7 +31,7 @@ export function InvitationEmail({
       </Heading>
       <Text style={typography.text}>
         <strong>{invitedByName}</strong> has invited you to join <strong>{organizationName}</strong>{' '}
-        on Quackback.
+        on {productName}.
       </Text>
 
       {/* CTA Button */}

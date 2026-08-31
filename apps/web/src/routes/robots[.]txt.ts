@@ -1,4 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router'
+import { buildRobotsTxt } from '@/lib/server/robots'
 
 export const Route = createFileRoute('/robots.txt')({
   server: {
@@ -7,16 +8,7 @@ export const Route = createFileRoute('/robots.txt')({
         const { config } = await import('@/lib/server/config')
         const baseUrl = config.baseUrl
 
-        const body = `User-agent: *
-Allow: /
-Disallow: /admin/
-Disallow: /auth/
-Disallow: /onboarding/
-Disallow: /api/
-Disallow: /widget
-
-Sitemap: ${baseUrl}/sitemap.xml
-`
+        const body = buildRobotsTxt(baseUrl, process.env.PORTAL_NOINDEX === 'true')
 
         return new Response(body, {
           headers: {
