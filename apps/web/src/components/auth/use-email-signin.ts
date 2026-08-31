@@ -14,7 +14,10 @@ interface UseEmailSigninResult {
   code: string
   setCode: (code: string) => void
   /** Trigger the sign-in email send (POST /api/auth/portal-signin). */
-  requestEmail: (email: string) => Promise<{ ok: boolean; error?: string }>
+  requestEmail: (
+    email: string,
+    turnstileToken?: string | null
+  ) => Promise<{ ok: boolean; error?: string }>
   /** Verify a 6-digit code; calls onSuccess on success. Idempotent if already loading. */
   verify: (email: string, otp: string) => Promise<void>
   /** Re-send the email; share the request flow. */
@@ -44,14 +47,17 @@ export function useEmailSignin({
     return () => clearTimeout(t)
   }, [resendCooldown])
 
-  const requestEmail = async (email: string): Promise<{ ok: boolean; error?: string }> => {
+  const requestEmail = async (
+    email: string,
+    turnstileToken?: string | null
+  ): Promise<{ ok: boolean; error?: string }> => {
     setError('')
     setLoading(true)
     try {
       const res = await fetch('/api/auth/portal-signin', {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({ email, callbackURL: callbackUrl }),
+        body: JSON.stringify({ email, callbackURL: callbackUrl, turnstileToken }),
       })
       if (!res.ok) {
         const body = (await res.json().catch(() => ({}))) as { error?: string }

@@ -26,6 +26,7 @@ import { FeedbackLinkedEmail } from './templates/feedback-linked'
 import { PasswordResetEmail } from './templates/password-reset'
 import { RecoveryCodeUsedEmail } from './templates/recovery-code-used'
 import { NewSignInEmail } from './templates/new-sign-in'
+import { getEmailProductName } from './branding'
 
 /**
  * Get environment variable at runtime.
@@ -225,7 +226,7 @@ export async function sendInvitationEmail(params: SendInvitationParams): Promise
 
   return sendEmail({
     to,
-    subject: `You've been invited to join ${workspaceName} on Quackback`,
+    subject: `You've been invited to join ${workspaceName} on ${getEmailProductName()}`,
     react: InvitationEmail({
       invitedByName,
       inviteeName,
@@ -291,7 +292,7 @@ export async function sendWelcomeEmail(params: SendWelcomeParams): Promise<Email
 
   return sendEmail({
     to,
-    subject: `Welcome to ${workspaceName} on Quackback!`,
+    subject: `Welcome to ${workspaceName} on ${getEmailProductName()}!`,
     react: WelcomeEmail({ name, workspaceName, dashboardUrl, logoUrl }),
   })
 }
@@ -321,7 +322,7 @@ export async function sendMagicLinkEmail(params: SendMagicLinkParams): Promise<E
   log.debug('sending sign-in email')
   return sendEmail({
     to,
-    subject: 'Your Quackback sign-in link',
+    subject: `Your ${getEmailProductName()} sign-in link`,
     react: MagicLinkEmail({ signInUrl, code, logoUrl }),
   })
 }
@@ -352,7 +353,7 @@ export async function sendPasswordResetEmail(
   log.debug('sending password reset email')
   return sendEmail({
     to,
-    subject: 'Reset your Quackback password',
+    subject: `Reset your ${getEmailProductName()} password`,
     react: PasswordResetEmail({ resetLink, logoUrl }),
   })
 }
