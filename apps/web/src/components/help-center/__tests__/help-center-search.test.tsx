@@ -36,11 +36,15 @@ describe('HelpCenterHeroSearch', () => {
       </IntlProvider>
     )
 
-    expect(screen.getByRole('searchbox', { name: 'Search articles...' })).toBeInTheDocument()
-    expect(
-      screen.getByText(
-        'Do not enter private run, health, exact location, account, or authentication details.'
-      )
-    ).toBeInTheDocument()
+    const searchbox = screen.getByRole('searchbox', { name: 'Search articles...' })
+    expect(searchbox).toBeInTheDocument()
+    expect(searchbox.parentElement).toHaveClass('bg-card', 'shadow-sm')
+    expect(searchbox.parentElement).not.toHaveClass('bg-muted', 'shadow-lg')
+
+    const warning = screen.getByText(
+      'Do not enter private run, health, exact location, account, or authentication details.'
+    )
+    expect(warning).toBeInTheDocument()
+    expect(warning).not.toHaveClass('px-1')
   })
 })
