@@ -38,6 +38,7 @@ import { getMyConversationsFn } from '@/lib/server/functions/conversation'
 import { PORTAL_MY_CONVERSATIONS_QUERY_KEY } from '@/lib/client/queries/portal-support'
 import { useAuthBroadcast } from '@/lib/client/hooks/use-auth-broadcast'
 import { NotificationBell } from '@/components/notifications'
+import { LAYER_HOME_LINK } from '@/lib/shared/portal-site-metadata'
 
 interface PortalHeaderProps {
   orgName: string
@@ -249,6 +250,9 @@ export function PortalHeader({
           </Link>
         )
       })}
+      <a href={LAYER_HOME_LINK.url} className={navItemClass(false)}>
+        {LAYER_HOME_LINK.label}
+      </a>
       {helpHeaderLinks.map((link) => {
         const external = !link.url.startsWith('/')
         return (

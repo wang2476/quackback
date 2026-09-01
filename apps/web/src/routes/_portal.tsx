@@ -35,6 +35,7 @@ import { resolveInstantSsoRedirectFn } from '@/lib/server/functions/instant-sso'
 import { useBrandingFont } from '@/lib/client/hooks/use-branding-font'
 import { usePreviewDraft } from '@/components/public/preview-draft-context'
 import { resolvePortalOgImageUrl } from '@/lib/shared/portal-og-image'
+import { getPortalSiteMetadata } from '@/lib/shared/portal-site-metadata'
 
 /**
  * Portal documents may be framed same-origin only — the admin Branding page
@@ -213,7 +214,6 @@ export const Route = createFileRoute('/_portal')({
     const [avatarData, permissionKeys] = await Promise.all([avatarPromise, permissionKeysPromise])
 
     const brandingData = settings?.brandingData ?? null
-    const faviconData = settings?.faviconData ?? null
     const brandingConfig = settings?.brandingConfig ?? {}
     const customCss = settings?.customCss ?? ''
     const publicPortalConfig = settings?.publicPortalConfig ?? null
@@ -255,7 +255,6 @@ export const Route = createFileRoute('/_portal')({
       baseUrl: baseUrl ?? '',
       userRole,
       brandingData,
-      faviconData,
       themeStyles,
       customCss: customCssToApply,
       configFontSans: readFontSans(brandingConfig.light),
@@ -274,36 +273,28 @@ export const Route = createFileRoute('/_portal')({
     if (loaderData?.gate) {
       return {
         meta: [
-          { title: `Sign in · ${loaderData.gate.workspaceName}` },
+          { title: `Sign in · ${getPortalSiteMetadata(loaderData.gate.workspaceName).title}` },
           { name: 'robots', content: 'noindex, nofollow' },
         ],
-        links: [{ rel: 'icon', href: loaderData.gate.logoUrl || '/logo.png' }],
       }
     }
 
-    // Favicon priority: dedicated favicon > workspace logo > default logo.png
-    const faviconUrl =
-      loaderData?.faviconData?.url || loaderData?.brandingData?.logoUrl || '/logo.png'
-
-    const workspaceName = loaderData?.workspaceName ?? 'Quackback'
-    const description = `Share feedback, vote on feature requests, and track the ${workspaceName} roadmap.`
+    const workspaceName = loaderData?.workspaceName ?? 'Layer'
+    const { title, description } = getPortalSiteMetadata(workspaceName)
     // Social share image: workspace logo, then the bundled default.
     const ogImageUrl = resolvePortalOgImageUrl(loaderData?.brandingData, loaderData?.baseUrl)
 
     const meta: Array<Record<string, string>> = [
-      { title: workspaceName },
+      { title },
       { name: 'description', content: description },
-      { property: 'og:site_name', content: workspaceName },
-      { property: 'og:title', content: workspaceName },
+      { property: 'og:site_name', content: title },
+      { property: 'og:title', content: title },
       { property: 'og:description', content: description },
       { property: 'og:image', content: ogImageUrl },
-      { name: 'twitter:title', content: workspaceName },
+      { name: 'twitter:title', content: title },
       { name: 'twitter:description', content: description },
     ]
-    return {
-      meta,
-      links: [{ rel: 'icon', href: faviconUrl }],
-    }
+    return { meta }
   },
   component: PortalLayout,
 })

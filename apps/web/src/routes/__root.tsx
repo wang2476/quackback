@@ -28,6 +28,9 @@ import { OttHandler } from '@/components/shared/ott-handler'
 import { VisitorBeacon } from '@/components/shared/visitor-beacon'
 import { documentLocale, htmlLangDir } from '@/lib/shared/document-locale'
 import { normalizeLocale, DEFAULT_LOCALE, type SupportedLocale } from '@/lib/shared/i18n'
+import { getPortalSiteMetadata, PORTAL_FAVICON_HREF } from '@/lib/shared/portal-site-metadata'
+
+const DEFAULT_SITE_METADATA = getPortalSiteMetadata('Layer')
 
 export interface RouterContext {
   queryClient: QueryClient
@@ -145,11 +148,11 @@ export const Route = createRootRouteWithContext<RouterContext>()({
         content: 'width=device-width, initial-scale=1, viewport-fit=cover',
       },
       {
-        title: 'Quackback',
+        title: DEFAULT_SITE_METADATA.title,
       },
       {
         name: 'description',
-        content: 'Open-source customer feedback platform',
+        content: DEFAULT_SITE_METADATA.description,
       },
       {
         property: 'og:type',
@@ -164,6 +167,11 @@ export const Route = createRootRouteWithContext<RouterContext>()({
       {
         rel: 'stylesheet',
         href: appCss,
+      },
+      {
+        rel: 'icon',
+        href: PORTAL_FAVICON_HREF,
+        type: 'image/svg+xml',
       },
       {
         rel: 'alternate',
@@ -205,7 +213,9 @@ function MinimalDocument({ children }: Readonly<{ children: ReactNode }>) {
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <title>Quackback</title>
+        <title>{DEFAULT_SITE_METADATA.title}</title>
+        <meta name="description" content={DEFAULT_SITE_METADATA.description} />
+        <link rel="icon" href={PORTAL_FAVICON_HREF} type="image/svg+xml" />
         <HeadContent />
       </head>
       <body className="min-h-screen bg-background font-sans antialiased">{children}</body>

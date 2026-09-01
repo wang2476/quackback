@@ -133,6 +133,18 @@ describe('PortalHeader — Admin dropdown item', () => {
   })
 })
 
+describe('PortalHeader — Layer home link', () => {
+  afterEach(() => cleanup())
+
+  it('links back to the Layer homepage', () => {
+    renderHeader({ userRole: null, isLoggedIn: false })
+    expect(screen.getByRole('link', { name: 'Layer home' })).toHaveAttribute(
+      'href',
+      'https://layertoday.com'
+    )
+  })
+})
+
 describe('PortalHeader — single-IdP redirect', () => {
   beforeEach(() => {
     mockOpenAuthPopover.mockClear()
