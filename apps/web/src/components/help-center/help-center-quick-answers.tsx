@@ -10,11 +10,7 @@ export function HelpCenterQuickAnswers({ items }: HelpCenterQuickAnswersProps) {
   if (items.length === 0) return null
 
   return (
-    <section
-      aria-labelledby="hc-quick-answers"
-      className="mx-auto max-w-4xl px-4 pb-14 pt-2 sm:px-6 animate-in fade-in duration-300 fill-mode-backwards"
-      style={{ animationDelay: '100ms' }}
-    >
+    <section aria-labelledby="hc-quick-answers" className="max-w-4xl">
       <div className="mb-5">
         <h2 id="hc-quick-answers" className="text-2xl font-semibold tracking-tight text-foreground">
           Quick answers

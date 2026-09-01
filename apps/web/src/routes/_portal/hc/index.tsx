@@ -120,27 +120,27 @@ function HelpCenterLandingPage() {
         <HelpCenterHeroSearch askAiEnabled={askAiEnabled} />
       </HelpCenterHero>
 
-      <HelpCenterQuickAnswers items={helpCenterConfig?.faqItems ?? []} />
+      <div className="mx-auto w-full max-w-6xl px-4 pb-20 sm:px-6">
+        <div className="space-y-14 sm:space-y-16">
+          <HelpCenterQuickAnswers items={helpCenterConfig?.faqItems ?? []} />
 
-      <section
-        aria-labelledby="hc-topics"
-        className="mx-auto max-w-6xl px-4 pb-16 pt-2 sm:px-6 animate-in fade-in duration-300 fill-mode-backwards"
-        style={{ animationDelay: '100ms' }}
-      >
-        <div className="mb-6 flex items-baseline justify-between gap-4">
-          <h2 id="hc-topics" className="text-2xl font-semibold tracking-tight text-foreground">
-            Browse by topic
-          </h2>
-          {collectionCount > 0 && (
-            <span className="shrink-0 text-sm text-muted-foreground">
-              {collectionCount} {collectionCount === 1 ? 'collection' : 'collections'}
-            </span>
-          )}
+          <section aria-labelledby="hc-topics">
+            <div className="mb-6 flex items-baseline justify-between gap-4">
+              <h2 id="hc-topics" className="text-2xl font-semibold tracking-tight text-foreground">
+                Browse by topic
+              </h2>
+              {collectionCount > 0 && (
+                <span className="shrink-0 text-sm text-muted-foreground">
+                  {collectionCount} {collectionCount === 1 ? 'collection' : 'collections'}
+                </span>
+              )}
+            </div>
+            <HelpCenterCategoryGrid categories={categories} />
+          </section>
+
+          <HelpCenterPopularArticles articles={popularArticles} />
         </div>
-        <HelpCenterCategoryGrid categories={categories} />
-      </section>
-
-      <HelpCenterPopularArticles articles={popularArticles} />
+      </div>
     </>
   )
 }

@@ -112,7 +112,7 @@ export function HelpCenterHeroSearch({ askAiEnabled = false, locale }: HelpCente
 
   return (
     <div ref={containerRef} role="search" className="relative w-full">
-      <div className="flex items-center gap-3 rounded-2xl border border-border bg-muted pl-5 pr-2 shadow-lg transition-[color,box-shadow] focus-within:border-primary focus-within:ring-4 focus-within:ring-primary/20">
+      <div className="flex items-center gap-3 rounded-2xl border border-border bg-card pl-5 pr-2 shadow-sm transition-[color,box-shadow] focus-within:border-primary focus-within:ring-4 focus-within:ring-primary/20">
         <MagnifyingGlassIcon className="h-5 w-5 shrink-0 text-muted-foreground" />
         <input
           id="hc-search"
@@ -145,7 +145,7 @@ export function HelpCenterHeroSearch({ askAiEnabled = false, locale }: HelpCente
           </button>
         )}
       </div>
-      <p className="mt-2 px-1 text-xs text-muted-foreground">
+      <p className="mt-2 text-xs text-muted-foreground">
         <FormattedMessage
           id="portal.hc.search.privacyWarning"
           defaultMessage="Do not enter private run, health, exact location, account, or authentication details."

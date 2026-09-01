@@ -36,6 +36,7 @@ import { useBrandingFont } from '@/lib/client/hooks/use-branding-font'
 import { usePreviewDraft } from '@/components/public/preview-draft-context'
 import { resolvePortalOgImageUrl } from '@/lib/shared/portal-og-image'
 import { getPortalSiteMetadata } from '@/lib/shared/portal-site-metadata'
+import { PortalBackground } from '@/components/public/portal-background'
 
 /**
  * Portal documents may be framed same-origin only — the admin Branding page
@@ -380,7 +381,8 @@ function PortalLayout() {
                 // always forces one — hide it there.
                 showThemeToggle={themeMode === 'user' && !preview}
               />
-              <main className="flex-1 w-full flex flex-col">
+              <main className="relative isolate flex-1 w-full flex flex-col">
+                <PortalBackground />
                 <Outlet />
               </main>
               <AuthDialog authConfig={authConfig} workspaceName={workspaceName} />

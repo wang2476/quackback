@@ -37,7 +37,10 @@ describe('HelpCenterQuickAnswers', () => {
   it('renders collapsed questions and the optional guide link', () => {
     render(<HelpCenterQuickAnswers items={items} />)
 
-    expect(screen.getByRole('heading', { name: 'Quick answers' })).toBeInTheDocument()
+    const heading = screen.getByRole('heading', { name: 'Quick answers' })
+    expect(heading).toBeInTheDocument()
+    expect(heading.closest('section')).toHaveClass('max-w-4xl')
+    expect(heading.closest('section')).not.toHaveClass('mx-auto')
     const details = document.querySelectorAll('details')
     expect(details).toHaveLength(2)
     expect(details[0]).not.toHaveAttribute('open')
