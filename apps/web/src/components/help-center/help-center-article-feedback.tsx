@@ -130,6 +130,12 @@ export function HelpCenterArticleFeedback({
               defaultMessage: 'Optional, but it tells us what to fix.',
             })}
           />
+          <p className="mt-2 text-xs text-muted-foreground">
+            <FormattedMessage
+              id="portal.hc.articleFeedback.privacyWarning"
+              defaultMessage="Do not include private run, health, exact location, account, or authentication details."
+            />
+          </p>
           <div className="mt-2 flex justify-end">
             <Button
               type="button"
@@ -158,12 +164,21 @@ export function HelpCenterArticleFeedback({
               defaultMessage="Still stuck?"
             />
           </span>{' '}
-          <Link to={supportHref} className="font-medium text-primary hover:underline">
-            <FormattedMessage
-              id="portal.hc.articleFeedback.contactSupport"
-              defaultMessage="Contact support"
-            />
-          </Link>
+          {supportHref.startsWith('mailto:') ? (
+            <a href={supportHref} className="font-medium text-primary hover:underline">
+              <FormattedMessage
+                id="portal.hc.articleFeedback.contactSupport"
+                defaultMessage="Contact support"
+              />
+            </a>
+          ) : (
+            <Link to={supportHref} className="font-medium text-primary hover:underline">
+              <FormattedMessage
+                id="portal.hc.articleFeedback.contactSupport"
+                defaultMessage="Contact support"
+              />
+            </Link>
+          )}
         </div>
       )}
     </div>

@@ -133,15 +133,24 @@ describe('PortalHeader — Admin dropdown item', () => {
   })
 })
 
-describe('PortalHeader — Layer home link', () => {
+describe('PortalHeader — Back to Layer link', () => {
   afterEach(() => cleanup())
 
   it('links back to the Layer homepage', () => {
     renderHeader({ userRole: null, isLoggedIn: false })
-    expect(screen.getByRole('link', { name: 'Layer home' })).toHaveAttribute(
+    expect(screen.getByRole('link', { name: 'Back to Layer' })).toHaveAttribute(
       'href',
       'https://layertoday.com'
     )
+  })
+
+  it('renders before the portal navigation with a visual separator', () => {
+    renderHeader({ userRole: null, isLoggedIn: false })
+    const navLinks = screen.getByRole('navigation').querySelectorAll('a')
+
+    expect(navLinks[0]).toHaveTextContent('Back to Layer')
+    expect(navLinks[0]).toHaveClass('border-e')
+    expect(navLinks[1]).toHaveTextContent('Feedback')
   })
 })
 

@@ -1,4 +1,15 @@
 {
   "_comment": "Reviewed exceptions for `bun audit` (see scripts/audit-check.ts). Each entry suppresses one advisory, keyed by its GHSA id, until `expires` (YYYY-MM-DD, UTC). CI fails on any high/critical production advisory that is not listed here with an unexpired entry, and on any listed entry that has expired while its advisory is still present. Keep this list as short as possible and prefer upgrading or overriding the dependency over adding an exception.",
-  "advisories": []
+  "advisories": [
+    {
+      "ghsa": "GHSA-c83g-rgw3-j3cx",
+      "reason": "Temporary exception until the lock resolves browserslist 4.28.7. Browserslist is a Babel build dependency here; Quackback does not call it with request-controlled queries, so the long-running server OOM path is not reachable.",
+      "expires": "2026-09-08"
+    },
+    {
+      "ghsa": "GHSA-73wf-gq98-2v4g",
+      "reason": "Temporary exception until the lock resolves browserslist 4.28.7. The vulnerable custom-stats path runs only in the build toolchain and would require repository-controlled input; it is not exposed to portal visitors.",
+      "expires": "2026-09-08"
+    }
+  ]
 }
