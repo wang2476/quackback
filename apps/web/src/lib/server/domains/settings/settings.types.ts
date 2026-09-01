@@ -922,6 +922,15 @@ export interface HelpCenterHeaderLink {
 /** Most header links the help center nav will render; the admin editor enforces the same cap. */
 export const HELP_CENTER_HEADER_LINKS_MAX = 3
 
+/** A concise answer shown on the default-locale help center homepage. */
+export interface HelpCenterFaqItem {
+  id: string
+  question: string
+  answer: string
+  /** Optional root-relative link to the matching full help article. */
+  articlePath?: string
+}
+
 export interface HelpCenterConfig {
   /**
    * @deprecated Ignored at read time. Help Center is public when the
@@ -932,6 +941,8 @@ export interface HelpCenterConfig {
   homepageDescription: string
   /** Custom links shown beside the built-in nav on help center pages only. */
   headerLinks: HelpCenterHeaderLink[]
+  /** Quick answers shown on the unprefixed, default-locale help center homepage. */
+  faqItems: HelpCenterFaqItem[]
   domain: HelpCenterDomainConfig
   locales: HelpCenterLocalesConfig
   autoTranslate: HelpCenterAutoTranslateConfig
@@ -943,6 +954,7 @@ export const DEFAULT_HELP_CENTER_CONFIG: HelpCenterConfig = {
   homepageTitle: 'How can we help?',
   homepageDescription: 'Search our knowledge base or browse by category',
   headerLinks: [],
+  faqItems: [],
   domain: DEFAULT_HELP_CENTER_DOMAIN_CONFIG,
   locales: DEFAULT_HELP_CENTER_LOCALES_CONFIG,
   autoTranslate: DEFAULT_HELP_CENTER_AUTO_TRANSLATE_CONFIG,

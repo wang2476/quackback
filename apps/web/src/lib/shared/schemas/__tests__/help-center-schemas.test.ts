@@ -56,6 +56,56 @@ describe('updateHelpCenterConfigSchema', () => {
     })
     expect(result.success).toBe(true)
   })
+
+  it('accepts up to eight valid quick answers', () => {
+    const faqItems = Array.from({ length: 8 }, (_, index) => ({
+      id: `faq-${index}`,
+      question: `Question ${index}?`,
+      answer: `Answer ${index}.`,
+      articlePath: `/hc/articles/getting-started/article-${index}`,
+    }))
+
+    expect(updateHelpCenterConfigSchema.safeParse({ faqItems }).success).toBe(true)
+  })
+
+  it('rejects more than eight quick answers', () => {
+    const faqItems = Array.from({ length: 9 }, (_, index) => ({
+      id: `faq-${index}`,
+      question: `Question ${index}?`,
+      answer: `Answer ${index}.`,
+    }))
+
+    expect(updateHelpCenterConfigSchema.safeParse({ faqItems }).success).toBe(false)
+  })
+
+  it('rejects duplicate quick-answer IDs', () => {
+    const faqItems = [
+      { id: 'duplicate', question: 'First?', answer: 'First answer.' },
+      { id: 'duplicate', question: 'Second?', answer: 'Second answer.' },
+    ]
+
+    expect(updateHelpCenterConfigSchema.safeParse({ faqItems }).success).toBe(false)
+  })
+
+  it('rejects incomplete quick answers and non-article guide paths', () => {
+    expect(
+      updateHelpCenterConfigSchema.safeParse({
+        faqItems: [{ id: 'faq-1', question: '', answer: 'Answer.' }],
+      }).success
+    ).toBe(false)
+    expect(
+      updateHelpCenterConfigSchema.safeParse({
+        faqItems: [
+          {
+            id: 'faq-1',
+            question: 'Question?',
+            answer: 'Answer.',
+            articlePath: 'https://example.com/article',
+          },
+        ],
+      }).success
+    ).toBe(false)
+  })
 })
 
 describe('updateHelpCenterSeoSchema', () => {

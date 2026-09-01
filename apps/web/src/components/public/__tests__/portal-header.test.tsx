@@ -144,12 +144,12 @@ describe('PortalHeader — Back to Layer link', () => {
     )
   })
 
-  it('renders before the portal navigation with a visual separator', () => {
+  it('renders before the portal navigation without a divider', () => {
     renderHeader({ userRole: null, isLoggedIn: false })
     const navLinks = screen.getByRole('navigation').querySelectorAll('a')
 
     expect(navLinks[0]).toHaveTextContent('Back to Layer')
-    expect(navLinks[0]).toHaveClass('border-e')
+    expect(navLinks[0]).not.toHaveClass('border-e')
     expect(navLinks[1]).toHaveTextContent('Feedback')
   })
 })

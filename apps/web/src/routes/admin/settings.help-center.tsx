@@ -15,6 +15,7 @@ import { Button } from '@/components/ui/button'
 import { PlusIcon, TrashIcon } from '@heroicons/react/24/solid'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { DomainsLanguagesTab } from '@/components/admin/settings/help-center/domains-languages-tab'
+import { HelpCenterFaqSettings } from '@/components/admin/settings/help-center/help-center-faq-settings'
 import { settingsQueries } from '@/lib/client/queries/settings'
 import { useUpdateHelpCenterConfig } from '@/lib/client/mutations/settings'
 import { useDebouncedSave } from '@/lib/client/hooks/use-debounced-save'
@@ -253,6 +254,12 @@ function HelpCenterSettingsPage() {
               </div>
             </div>
           </SettingsCard>
+
+          <HelpCenterFaqSettings
+            initialItems={config.faqItems ?? []}
+            isBusy={isBusy}
+            onSave={(faqItems) => saveField({ faqItems })}
+          />
         </TabsContent>
 
         <TabsContent value="domains-languages">
