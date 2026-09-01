@@ -13,6 +13,7 @@ import { isProductEnabled } from '@/lib/shared/types/settings'
 import { isStatusPagePublished } from '@/lib/shared/status-settings'
 import { isPortalSupportSurfaceEnabled } from '@/lib/shared/support-surfaces'
 import { getShowPoweredByFn } from '@/lib/server/functions/powered-by'
+import { getPortalSiteMetadata } from '@/lib/shared/portal-site-metadata'
 
 const searchSchema = z.object({
   board: z.string().optional(),
@@ -112,8 +113,7 @@ export const Route = createFileRoute('/_portal/')({
   head: ({ loaderData }) => {
     if (!loaderData) return {}
     const { workspaceName, baseUrl } = loaderData
-    const title = `Feedback - ${workspaceName}`
-    const description = `Submit and vote on feature requests for ${workspaceName}. Help shape what gets built next.`
+    const { title, description } = getPortalSiteMetadata(workspaceName)
     return {
       meta: [
         { title },
