@@ -82,6 +82,7 @@ const configSchema = z
     nodeEnv: z.enum(['development', 'production', 'test']).default('development'),
     baseUrl: z.string().url(),
     port: envInt.default(3000),
+    portalNoindex: envBoolean.default(false),
 
     // Database
     //
@@ -260,6 +261,7 @@ function buildConfigFromEnv(): unknown {
     nodeEnv: process.env.NODE_ENV,
     baseUrl: process.env.BASE_URL,
     port: env('PORT'),
+    portalNoindex: env('PORTAL_NOINDEX'),
 
     // Database
     databaseUrl: env('DATABASE_URL'),
@@ -405,6 +407,9 @@ export const config = {
   },
   get port() {
     return loadConfig().port
+  },
+  get portalNoindex() {
+    return loadConfig().portalNoindex
   },
   /**
    * The fleet-wide database. Throws under pooled tenancy, where there is no

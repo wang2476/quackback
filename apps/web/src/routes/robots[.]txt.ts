@@ -1,4 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router'
+import { buildRobotsTxt } from '@/lib/shared/robots'
 
 export const Route = createFileRoute('/robots.txt')({
   server: {
@@ -16,20 +17,12 @@ export const Route = createFileRoute('/robots.txt')({
         // nor advertised via a sitemap link.
         const helpCenterIndexable = helpCenterEnabled && helpCenterConfig.seo?.indexable !== false
 
-        const lines = [
-          'User-agent: *',
-          'Allow: /',
-          'Disallow: /admin/',
-          'Disallow: /auth/',
-          'Disallow: /onboarding/',
-          'Disallow: /api/',
-          'Disallow: /widget',
-          ...(helpCenterEnabled && !helpCenterIndexable ? ['Disallow: /hc'] : []),
-          '',
-          `Sitemap: ${baseUrl}/sitemap.xml`,
-          ...(helpCenterIndexable ? [`Sitemap: ${baseUrl}/hc/sitemap.xml`] : []),
-        ]
-        const body = lines.join('\n') + '\n'
+        const body = buildRobotsTxt({
+          baseUrl,
+          portalNoindex: config.portalNoindex,
+          helpCenterEnabled,
+          helpCenterIndexable,
+        })
 
         return new Response(body, {
           headers: {
