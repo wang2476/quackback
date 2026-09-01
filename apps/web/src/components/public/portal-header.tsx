@@ -25,6 +25,7 @@ import { Avatar } from '@/components/ui/avatar'
 import { UserStatsBar } from '@/components/shared/user-stats'
 import {
   ArrowRightStartOnRectangleIcon,
+  ArrowLeftIcon,
   Cog6ToothIcon,
   ComputerDesktopIcon,
   MoonIcon,
@@ -207,6 +208,16 @@ export function PortalHeader({
 
   const Navigation = () => (
     <nav className="portal-nav flex items-center gap-1 whitespace-nowrap">
+      <a
+        href={LAYER_HOME_LINK.url}
+        className={cn(
+          navItemClass(false),
+          'portal-nav__home me-1 flex items-center gap-1.5 border-e border-[var(--header-border)] pe-4'
+        )}
+      >
+        <ArrowLeftIcon aria-hidden="true" className="h-4 w-4 shrink-0" />
+        {LAYER_HOME_LINK.label}
+      </a>
       {navItems.map((item) => {
         if (item.kind === 'link') {
           return (
@@ -250,9 +261,6 @@ export function PortalHeader({
           </Link>
         )
       })}
-      <a href={LAYER_HOME_LINK.url} className={navItemClass(false)}>
-        {LAYER_HOME_LINK.label}
-      </a>
       {helpHeaderLinks.map((link) => {
         const external = !link.url.startsWith('/')
         return (

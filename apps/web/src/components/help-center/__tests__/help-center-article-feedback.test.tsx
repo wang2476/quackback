@@ -29,10 +29,10 @@ afterEach(() => {
   submitReason.mockClear()
 })
 
-function renderFeedback() {
+function renderFeedback(supportHref?: string) {
   return render(
     <IntlProvider locale="en" messages={{}} onError={() => {}}>
-      <HelpCenterArticleFeedback articleId="kb_article_1" />
+      <HelpCenterArticleFeedback articleId="kb_article_1" supportHref={supportHref} />
     </IntlProvider>
   )
 }
@@ -89,5 +89,18 @@ describe('HelpCenterArticleFeedback', () => {
 
     fireEvent.click(send)
     expect(submitReason).not.toHaveBeenCalled()
+  })
+
+  it('warns against private details and supports an email fallback', async () => {
+    renderFeedback('mailto:help@layertoday.com')
+    await voteUnhelpful()
+
+    expect(
+      screen.getByText(/do not include private run, health, exact location/i)
+    ).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: /contact support/i })).toHaveAttribute(
+      'href',
+      'mailto:help@layertoday.com'
+    )
   })
 })

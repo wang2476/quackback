@@ -1,5 +1,5 @@
 import { useState, useRef, useCallback, useEffect } from 'react'
-import { useIntl } from 'react-intl'
+import { FormattedMessage, useIntl } from 'react-intl'
 import { MagnifyingGlassIcon, ArrowRightIcon } from '@heroicons/react/24/outline'
 import { Button } from '@/components/ui/button'
 import { contentPreview } from '@/lib/shared/utils/string'
@@ -145,6 +145,12 @@ export function HelpCenterHeroSearch({ askAiEnabled = false, locale }: HelpCente
           </button>
         )}
       </div>
+      <p className="mt-2 px-1 text-xs text-muted-foreground">
+        <FormattedMessage
+          id="portal.hc.search.privacyWarning"
+          defaultMessage="Do not enter private run, health, exact location, account, or authentication details."
+        />
+      </p>
 
       {!answerOpen && showResults && (results.length > 0 || hasAskRow) && (
         <div className="absolute top-full left-0 right-0 mt-2 rounded-xl border border-border bg-popover shadow-lg z-50 overflow-hidden">

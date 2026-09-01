@@ -20,6 +20,7 @@ import { JsonLd } from '@/components/json-ld'
 import { buildArticleJsonLd, buildBreadcrumbJsonLd } from '@/lib/shared/json-ld'
 import { stripMarkdownPreview } from '@/lib/shared/utils'
 import { isPortalSupportSurfaceEnabled } from '@/lib/shared/support-surfaces'
+import { LAYER_SUPPORT_EMAIL } from '@/lib/shared/portal-site-metadata'
 import type { JSONContent } from '@tiptap/react'
 
 const helpCenterApi = getRouteApi('/_portal/hc')
@@ -191,7 +192,7 @@ function ArticleDetailPage() {
 
             <HelpCenterArticleFeedback
               articleId={article.id}
-              supportHref={supportEnabled ? '/support/new' : null}
+              supportHref={supportEnabled ? '/support/new' : `mailto:${LAYER_SUPPORT_EMAIL}`}
             />
 
             <HelpCenterPrevNext categorySlug={categorySlug} prev={prev} next={next} />
