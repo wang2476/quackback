@@ -59,6 +59,10 @@ describe('HelpCenterConfig', () => {
       )
     })
 
+    it('should hide quick answers by default', () => {
+      expect(DEFAULT_HELP_CENTER_CONFIG.faqItems).toEqual([])
+    })
+
     it('should have default SEO config embedded', () => {
       expect(DEFAULT_HELP_CENTER_CONFIG.seo).toEqual(DEFAULT_HELP_CENTER_SEO_CONFIG)
     })
@@ -71,6 +75,14 @@ describe('HelpCenterConfig', () => {
         homepageTitle: 'Get Help',
         homepageDescription: 'Browse our docs',
         headerLinks: [{ label: 'Community', url: 'https://community.example.com' }],
+        faqItems: [
+          {
+            id: 'account',
+            question: 'Do I need an account?',
+            answer: 'No account is required for the basics.',
+            articlePath: '/hc/articles/accounts/account-basics',
+          },
+        ],
         domain: { domain: null, verifiedAt: null },
         locales: { default: 'en', additional: [], chrome: {} },
         autoTranslate: { enabled: false, protectedTerms: [] },
@@ -110,7 +122,19 @@ describe('parseJsonConfig with HelpCenterConfig', () => {
     expect(result.homepageTitle).toBe('Custom Title')
     // Defaults should be preserved
     expect(result.homepageDescription).toBe('Search our knowledge base or browse by category')
+    expect(result.faqItems).toEqual([])
     expect(result.seo).toEqual(DEFAULT_HELP_CENTER_SEO_CONFIG)
+  })
+
+  it('preserves stored quick-answer order', () => {
+    const faqItems = [
+      { id: 'second', question: 'Second?', answer: 'Second answer.' },
+      { id: 'first', question: 'First?', answer: 'First answer.' },
+    ]
+
+    const result = parseJsonConfig(JSON.stringify({ faqItems }), DEFAULT_HELP_CENTER_CONFIG)
+
+    expect(result.faqItems).toEqual(faqItems)
   })
 
   it('deep merges nested seo config with defaults', () => {

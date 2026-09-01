@@ -19,6 +19,7 @@ export type {
   WorkspaceSettings,
   HelpCenterConfig,
   HelpCenterHeaderLink,
+  HelpCenterFaqItem,
   HelpCenterDomainConfig,
   HelpCenterSeoConfig,
   HelpCenterLocalesConfig,

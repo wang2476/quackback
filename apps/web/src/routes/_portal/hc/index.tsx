@@ -5,6 +5,7 @@ import { HelpCenterHero } from '@/components/help-center/help-center-hero'
 import { HelpCenterHeroSearch } from '@/components/help-center/help-center-search'
 import { HelpCenterCategoryGrid } from '@/components/help-center/help-center-category-grid'
 import { HelpCenterPopularArticles } from '@/components/help-center/help-center-popular-articles'
+import { HelpCenterQuickAnswers } from '@/components/help-center/help-center-quick-answers'
 import { getTopLevelCategories } from '@/components/help-center/help-center-utils'
 import {
   listPublicCategoriesFn,
@@ -118,6 +119,8 @@ function HelpCenterLandingPage() {
       <HelpCenterHero variant="home" title={title} description={description}>
         <HelpCenterHeroSearch askAiEnabled={askAiEnabled} />
       </HelpCenterHero>
+
+      <HelpCenterQuickAnswers items={helpCenterConfig?.faqItems ?? []} />
 
       <section
         aria-labelledby="hc-topics"

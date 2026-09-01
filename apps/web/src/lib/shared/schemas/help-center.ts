@@ -7,6 +7,7 @@
 import { z } from 'zod'
 import { tiptapContentSchema } from './posts'
 import { SUPPORTED_LOCALES } from '../i18n'
+import { HELP_CENTER_FAQ_ITEMS_MAX } from '../help-center-config'
 
 // ============================================================================
 // Category Schemas
@@ -176,11 +177,34 @@ export const helpCenterHeaderLinkSchema = z.object({
   url: helpCenterHeaderLinkUrl,
 })
 
+export const helpCenterFaqItemSchema = z.object({
+  id: z.string().trim().min(1).max(100),
+  question: z.string().trim().min(1, 'Question is required').max(160),
+  answer: z.string().trim().min(1, 'Answer is required').max(600),
+  articlePath: z
+    .string()
+    .trim()
+    .max(500)
+    .regex(
+      /^\/hc\/articles\/[a-z0-9]+(?:-[a-z0-9]+)*\/[a-z0-9]+(?:-[a-z0-9]+)*$/,
+      'Guide path must point to a Help Center article'
+    )
+    .optional(),
+})
+
 export const updateHelpCenterConfigSchema = z.object({
   homepageTitle: z.string().min(1).max(200).optional(),
   homepageDescription: z.string().max(500).optional(),
   /** Wholesale replacement — the header renders at most 3 links. */
   headerLinks: z.array(helpCenterHeaderLinkSchema).max(3).optional(),
+  /** Wholesale replacement — the homepage renders at most 8 quick answers. */
+  faqItems: z
+    .array(helpCenterFaqItemSchema)
+    .max(HELP_CENTER_FAQ_ITEMS_MAX)
+    .refine((items) => new Set(items.map((item) => item.id)).size === items.length, {
+      message: 'Quick answer IDs must be unique',
+    })
+    .optional(),
 })
 
 export const updateHelpCenterSeoSchema = z.object({

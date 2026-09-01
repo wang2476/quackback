@@ -210,10 +210,7 @@ export function PortalHeader({
     <nav className="portal-nav flex items-center gap-1 whitespace-nowrap">
       <a
         href={LAYER_HOME_LINK.url}
-        className={cn(
-          navItemClass(false),
-          'portal-nav__home me-1 flex items-center gap-1.5 border-e border-[var(--header-border)] pe-4'
-        )}
+        className={cn(navItemClass(false), 'portal-nav__home me-2 flex items-center gap-1.5')}
       >
         <ArrowLeftIcon aria-hidden="true" className="h-4 w-4 shrink-0" />
         {LAYER_HOME_LINK.label}
